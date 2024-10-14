@@ -12,3 +12,4 @@ Docker
 1. Можно сделать образ докера командой docker build -t server.go:multistage -f Dockerfile.multistage . (метка образа server.go:multistag может быть произвольной)
 2. Запустить контейнер docker run -p 8080:8080 -v C:\static:/static:rw server.go:multistage (тут используется Volume для использования контейнером файлов на хост-машине,
 нужно указать путь к папке static на хост машине, также идет проброс порта в контейнер, в данном случае порт 8080 хоста будет транслироваться на порт 8080 контейнера)
+3. Ссылка на [докерхаб](https://hub.docker.com/repository/docker/xetzerdocker/server_go_docker/general)
