@@ -1,0 +1,19 @@
+# syntax=docker/dockerfile:1
+# мультисборка, сперва идет сборка в образе с go откуда копируется то что нужно в отдельный образ, для уменьшения веса образа. 
+# говорим что в качестве первого образа используем golang, имя образа будет build-stage
+FROM golang:1.23 AS build-stage
+WORKDIR /app
+COPY go.mod ./
+RUN go mod download
+COPY *.go ./
+# Build  CGO_ENABLED=0 отключает CGO, получится скомпилированное приложение вместе со статически связанными С-библеотеками, бинарник работает без каких-либо зависимостей
+# GOOS=linux ОС будет linux
+RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-server
+
+# Копируем приложение в новый образ меньшего размера
+FROM gcr.io/distroless/base-debian11 AS build-release-stage
+WORKDIR /
+COPY --from=build-stage /docker-gs-server /docker-gs-server
+EXPOSE 8080
+USER nonroot:nonroot
+ENTRYPOINT [ "/docker-gs-server" ]
