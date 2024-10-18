@@ -117,13 +117,10 @@ func httpHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		defer r.Body.Close()
-		// http.ServeFile(w, r, jsonFilePath)
 	} else if r.Method == "GET" {
 		switch r.RequestURI {
 		case "/":
 			http.ServeFile(w, r, "static/index.html")
-		// case "/TD_RELAY.json":
-		// 	http.ServeFile(w, r, "static/TD_RELAY.json")
 		default:
 			filepath := "static" + r.RequestURI
 			http.ServeFile(w, r, filepath)
@@ -166,18 +163,8 @@ func replaceValues(source map[string]interface{}, template map[string]interface{
 
 func main() {
 	port := flag.String("port", "8080", "Порт")
-	// jsonFilePath = flag.String("jsonFilePath", "static/TD_RELAY.json", "Файл json")
 	flag.Parse()
 	addr := fmt.Sprintf("0.0.0.0:%s", *port)
-	// var fileError error
-	// jsonString, fileError = ReadJsonFile(*jsonFilePath)
-	// if fileError != nil {
-	// 	fmt.Println("there is error during find web files: " + fileError.Error())
-	// } else {
-	// 	fmt.Println(*jsonFilePath + " is loaded")
-	// 	// clearedJson := PrepareJsonStr(jsonString)
-	// 	// fmt.Println(clearedJson)
-	// }
 	http.HandleFunc("/", httpHandler)
 
 	fmt.Println("Server started on  http://" + addr + "/ 'ctr+c' for close server")
