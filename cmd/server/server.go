@@ -74,7 +74,13 @@ func httpHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			defer r.Body.Close()
 			JsonChangesStr := string(body)
-			fmt.Println("POST-ed json string is: ", JsonChangesStr)
+			if len(JsonChangesStr) != 0 {
+				fmt.Println("POST-ed json string is: ", JsonChangesStr)
+			} else {
+				fmt.Println("POST-ed empty string: ")
+				errorResponse(w, "", http.StatusOK)
+				return
+			}
 
 			// Если файл существует, то загрузим все из него
 			fileExist := false
