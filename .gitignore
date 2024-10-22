@@ -6,3 +6,4 @@
 cmd/server/static/index.html
 cmd/server/static/TD_RELAY.json
 cmd/server/server.exe
+cmd/server/startServer.bat

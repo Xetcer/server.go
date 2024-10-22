@@ -2,12 +2,12 @@
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	// "strings"
 	// "server.go/testpack"
 )
@@ -182,10 +182,25 @@ func replaceValues(source map[string]interface{}, template map[string]interface{
 	}
 }
 
+func IsPortCorrect(port string) bool {
+	// проверяем что порт это цифры от 1 - 5
+	b := []byte(port)
+	re := regexp.MustCompile(`^\d{1,5}$`)
+	return re.Match(b)
+}
+
+// запуск из командной строки с параметрами .\server.exe 80
 func main() {
-	port := flag.String("port", "8080", "Порт")
-	flag.Parse()
-	addr := fmt.Sprintf("0.0.0.0:%s", *port)
+	// port := flag.String("port", "8080", "Порт")
+	// flag.Parse()
+	port := "8080"
+	args := os.Args
+	if len(args) == 2 {
+		if IsPortCorrect(args[1]) {
+			port = args[1]
+		}
+	}
+	addr := fmt.Sprintf("0.0.0.0:%s", port)
 	http.HandleFunc("/", httpHandler)
 
 	fmt.Println("Server started on  http://" + addr + "/ 'ctr+c' for close server")
