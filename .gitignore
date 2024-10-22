@@ -3,3 +3,6 @@
 /server.go.exe
 /static
 /testpack
+cmd/server/static/index.html
+cmd/server/static/TD_RELAY.json
+cmd/server/server.exe
